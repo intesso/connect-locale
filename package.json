@@ -1,0 +1,31 @@
+{
+  "name": "connect-locale",
+  "version": "1.0.0",
+  "description": "configurable connect/express locale detection middleware",
+  "main": "server.js",
+  "browser": "browser.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/intesso/connect-locale.git"
+  },
+  "keywords": [
+    "locale",
+    "express",
+    "connect",
+    "locale-detection",
+    "i18n",
+    "i18n-locale"
+  ],
+  "author": "Andi Neck",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/intesso/connect-locale/issues"
+  },
+  "homepage": "https://github.com/intesso/connect-locale",
+  "dependencies": {
+    "debug": "^2.2.0"
+  }
+}
