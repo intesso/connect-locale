@@ -1,4 +1,5 @@
 var debug = require('debug')('connect-locale');
+var merge = require('utils-merge');
 
 module.exports = function locale(options) {
 
@@ -6,43 +7,26 @@ module.exports = function locale(options) {
   options = options || {};
   var strategies = options.strategies || {};
 
-  if (!options.getLocaleFrom) throw new Error('getLocaleFrom option is missing');
-  if (typeof options.getLocaleFrom === 'string') {
-    options.getLocaleFrom = options.getLocaleFrom.split(',');
-  }
-  if (!Array.isArray(options.getLocaleFrom)) throw new Error('getLocaleFrom must be an Array or a comma separated String');
-
-  if (!options.storeLocaleTo) throw new Error('storeLocaleTo option is missing');
-  if (typeof options.storeLocaleTo === 'string') {
-    options.storeLocaleTo = options.storeLocaleTo.split(',');
-  }
-  if (!Array.isArray(options.storeLocaleTo)) options.storeLocaleTo = [];
-
+  options.locales = typeof options.locales !== 'undefined' ? cleanupArray(options, 'locales', true) : undefined;
+  options.getLocaleFrom = cleanupArray(options, 'getLocaleFrom');
+  options.storeLocaleTo = cleanupArray(options, 'storeLocaleTo');
   options.cookieLocaleName = options.cookieLocaleName || 'lang';
   options.queryLocaleName = options.queryLocaleName || 'lang';
-  options.sessionName = options.sessionName || 'session';
-  options.sessionLocaleName = options.sessionLocaleName || 'lang';
   options.matchSubTags = typeof  options.matchSubTags !== 'undefined' ? options.matchSubTags : true;
-  options.reqResProperties = typeof  options.reqResProperties !== 'undefined' ? options.reqResProperties : true;
-  options.locals = typeof  options.locals !== 'undefined' ? options.locals : true;
 
   // create defined locales lookup
-  var definedLocales = options.locales;
   var localesLookup = {};
   if (options.locales) {
-    if (Array.isArray(options.locales)) {
-      definedLocales = options.locales.join(',');
-    }
-    definedLocales = definedLocales.replace(/_/g, '-').toLowerCase().split(',');
-    definedLocales.forEach(function(locale){
-      localesLookup[locale] = true;
+    options.locales.forEach(function(locale) {
+      localesLookup[locale] = locale;
 
       if (options.matchSubTags) {
         // according to http://www.rfc-editor.org/rfc/rfc4647.txt page 12
-        while (~locale.indexOf('-')) {
-          var index = locale.lastIndexOf('-');
-          locale = locale.substring(0, index);
-          localesLookup[locale] = true;
+        var subtag = locale;
+        while (~subtag.indexOf('-')) {
+          var index = subtag.lastIndexOf('-');
+          subtag = subtag.substring(0, index);
+          if (!localesLookup[subtag] || localesLookup[subtag] !== subtag) localesLookup[subtag] = locale;
         }
       }
 
@@ -59,17 +43,30 @@ module.exports = function locale(options) {
     })
   });
 
+  // helper function to trim, lowerCase the comma separated string or array
+  function cleanupArray(obj, name) {
+    var arr = obj[name];
+    if (!arr) throw new Error(name + ' option is missing');
+    if (Array.isArray(arr)) {
+      arr = arr.join(',');
+    }
+    if (typeof arr !== 'string') throw new Error(name +' option must be an Array or a comma separated String');
+    arr = arr.replace(/_/g, '-').replace(/\s/g, '').toLowerCase().split(',');
+    return arr;
+  }
+
   // helper function to detect locale or sublocale
   function matchLocale(locale) {
     var found = false;
     if (!locale) return false;
-    if (localesLookup[locale]) return locale;
+    locale = locale.replace(/_/g, '-').toLowerCase();
+    if (localesLookup[locale]) return localesLookup[locale];
     if (options.matchSubTags) {
       while (~locale.indexOf('-')) {
         var index = locale.lastIndexOf('-');
         locale = locale.substring(0, index);
         if (localesLookup[locale]) {
-          found = locale;
+          found = localesLookup[locale];
           break;
         }
       }
@@ -79,18 +76,14 @@ module.exports = function locale(options) {
 
   // connect/express middleware
   return function localeMiddleware(req, res, next) {
-    // reuse stored locale
-    if (!options.getLocaleAlways) {
-      if (req[options.sessionName] && req[options.sessionName][options.sessionLocaleName]) return next();
-      if (req.cookie && req.cookie[options.cookieLocaleName]) return next();
-    }
 
     // detect locale
     var locale, requestedLocale;
     options.getLocaleFrom.some(function(name) {
       var strategy = strategies[name];
       locale = requestedLocale = strategy.getLocaleFrom(req);
-      if (definedLocales) locale = matchLocale(locale);
+      if (typeof locale === 'object') return true;
+      if (options.locales) locale = matchLocale(locale);
       return !!locale;
     });
 
@@ -100,9 +93,9 @@ module.exports = function locale(options) {
         var accepted = strategies.acceptLanguage.getLocalesFrom(req);
         // the first one was already tested with getLocaleFrom
         accepted.shift();
-        accepted.some(function(l){
+        accepted.some(function(l) {
           locale = requestedLocale = l;
-          if (definedLocales) locale = matchLocale(l);
+          if (options.locales) locale = matchLocale(l);
           return !!locale;
         });
       }
@@ -111,26 +104,23 @@ module.exports = function locale(options) {
     // no locale at all
     if (!locale) return next();
 
-    // store locale to req and res.locals
-    if (options.reqResProperties) {
-      req.locale = locale;
-      req.requestedLocale = requestedLocale;
-      req.isPreferredLocale = locale === requestedLocale;
-      req.isSubLocale = !req.isPreferredLocale && requestedLocale.indexOf(locale) !== -1;
-    }
+    if (typeof locale === 'string') locale = locale.toLowerCase();
+    if (typeof requestedLocale === 'string') requestedLocale = requestedLocale.toLowerCase();
 
-    if (options.reqResProperties && options.locals) {
-      ['locale', 'requestedLocale', 'isPreferredLocale', 'isSubLocale'].forEach(function(property){
-        res.locals[property] = req.property;
-      });
-    }
+    // store locale
+    var localeObject = typeof locale === 'object' ? locale : {
+      locale: locale,
+      requestedLocale: requestedLocale,
+      isPreferredLocale: locale === requestedLocale,
+      isSubLocale: locale !== requestedLocale && (requestedLocale.indexOf(locale) !== -1 || locale.indexOf(requestedLocale) !== -1)
+    };
 
     // ok finally, locale detected -> store locale
     options.storeLocaleTo.forEach(function(name) {
       var strategy = strategies[name];
-      strategy.storeLocaleTo(req, res, locale);
-      return next();
+      strategy.storeLocaleTo(req, res, localeObject);
     });
+    return next();
 
   }
 
