@@ -33,7 +33,7 @@ app.use(Locale({
 
 ## options
 
-> locales: ['de', 'de-ch', 'en', 'en-GB', 'en-us']
+##### locales: ['de', 'de-ch', 'en', 'en-GB', 'en-us']
 
 Array or comma separated String, default: undefined
 
@@ -41,7 +41,7 @@ Array or comma separated String, default: undefined
  - If this option is omitted, it accetps the first locale that is detected with the given `getLocaleFrom` Strategy definition.
 
 
-> getLocaleFrom: ['path', 'subdomain', 'query', 'cookie', 'session', 'acceptLanguage']
+##### getLocaleFrom: ['path', 'subdomain', 'query', 'cookie', 'session', 'acceptLanguage']
 
 Array or comma separated String, default: undefined
 
@@ -50,7 +50,7 @@ Array or comma separated String, default: undefined
  - if no `locales` definitions are provided, it just returns the first locale it finds
 
 
-> storeLocaleTo: ['cookie', 'session']
+##### storeLocaleTo: ['cookie', 'session']
 
 Array or comma separated String, default: empty Array
 
@@ -58,14 +58,14 @@ Array or comma separated String, default: empty Array
  - The provided strategies are always processed from left to right
  - if no locale was found, nothing get's stored
 
-> getLocaleAlways: false
+##### getLocaleAlways: false
 
 Boolean, default: false
 
  - if set to `false`, it just takes the already stored locale if available, and does not try to get the locale again. 
  - if set to `true` always get locale even when stored already e.g. in cookie or session
 
-> matchSubTags: true
+##### matchSubTags: true
 
 Boolean, default: true
 
@@ -74,7 +74,7 @@ Boolean, default: true
  - turn this option off (false), if you want to match only the exact locales. e.g. 
 
 
-> reqResProperties: true
+##### reqResProperties: true
                 
 Boolean, default: true
 
@@ -82,7 +82,7 @@ Boolean, default: true
  - properties: 'locale', 'requestedLocale', 'isPreferredLocale', 'isSubLocale'
 
 
-> locals: true
+##### locals: true
 
 Boolean, default: true
 
@@ -91,7 +91,7 @@ Boolean, default: true
  - works only in combination with `reqResProperties`
 
 
-> path
+##### path
 
 Function, default: req.path
 
@@ -104,33 +104,33 @@ Function, default: req.path
   }
   ```
 
-> strategies
+##### strategies
 
 Object, default: all strategies from path './lib/stragety'
 
  - if you want to provide additional stategies, have a look how to implement it in the './lib/stragety' folder.
  - provide an object with the additional strategies in the form: {strategyName: strategy}
   
-> queryLocaleName
+##### queryLocaleName
 
 String, default: 'lang'
 
  - url query parameter name. example: `localhost?lang=de`
 
-> cookieLocaleName
+##### cookieLocaleName
 
 String, default: 'lang'
 
  - cookie name
   
-> sessionLocaleName
+##### sessionLocaleName
 
 String, default: 'lang'
 
  - session nested locale property name. example: `req.session.lang`
 	  
 
-> sessionLocaleName
+##### sessionLocaleName
 
 String, default: 'session'
 
