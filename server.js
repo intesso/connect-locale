@@ -1,8 +1,8 @@
 var debug = require('debug')('connect-locale');
 
-module.export = function locale(options) {
+module.exports = function locale(options) {
 
-  // initialize option parameters
+  // initialize option parameters, set defaults
   options = options || {};
   var strategies = options.strategies || {};
 
