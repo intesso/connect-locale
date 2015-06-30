@@ -112,7 +112,7 @@ module.exports = function locale(options) {
       locale: locale,
       requestedLocale: requestedLocale,
       isPreferredLocale: locale === requestedLocale,
-      isSubLocale: locale !== requestedLocale && (requestedLocale.indexOf(locale) !== -1 || locale.indexOf(requestedLocale) !== -1)
+      isSubLocale: locale !== requestedLocale && (requestedLocale.split('-')[0] === locale.split('-')[0])
     };
 
     // ok finally, locale detected -> store locale
