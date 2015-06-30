@@ -34,6 +34,7 @@ app.use(Locale({
 ## options
 
 > locales: ['de', 'de-ch', 'en', 'en-GB', 'en-us']
+
 Array or comma separated String, default: undefined
 
  - This is the definition of the supported locales (optional).
@@ -41,6 +42,7 @@ Array or comma separated String, default: undefined
 
 
 > getLocaleFrom: ['path', 'subdomain', 'query', 'cookie', 'session', 'acceptLanguage']
+
 Array or comma separated String, default: undefined
 
  - Mandatory Locale Detection Strategy Array.
@@ -49,6 +51,7 @@ Array or comma separated String, default: undefined
 
 
 > storeLocaleTo: ['cookie', 'session']
+
 Array or comma separated String, default: undefined
 
  - Mandatory Locale Storage Strategy Array.
@@ -56,12 +59,14 @@ Array or comma separated String, default: undefined
  - if no locale was found, nothing get's stored
 
 > getLocaleAlways: false
+
 Boolean, default: false
 
  - if set to `false`, it just takes the already stored locale if available, and does not try to get the locale again. 
  - if set to `true` always get locale even when stored already e.g. in cookie or session
 
 > matchSubTags: true
+
 Boolean, default: true
 
  - SubTags are detected. 
@@ -69,6 +74,7 @@ Boolean, default: true
  - turn this option off (false), if you want to match only the exact locales. e.g. 
 
 > path
+
 Function, default: req.path
 
  - provide a specific path function if you get the locale with the `path` strategy, but don't want the path to be based on req.path.
@@ -81,28 +87,33 @@ Function, default: req.path
   ```
 
 > strategies
+
 Object, default: all strategies from path './lib/stragety'
 
  - if you want to provide additional stategies, have a look how to implement it in the './lib/stragety' folder.
  - provide an object with the additional strategies in the form: {strategyName: strategy}
   
 > queryLocaleName
+
 String, default: 'lang'
 
  - url query parameter name. example: `localhost?lang=de`
 
 > cookieLocaleName
+
 String, default: 'lang'
 
  - cookie name
   
 > sessionLocaleName
+
 String, default: 'lang'
 
  - session nested locale properte name. example: `req.session.lang`
 	  
 
 > sessionLocaleName
+
 String, default: 'session'
 
  - session property name. example: `req.session`
