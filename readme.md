@@ -106,14 +106,14 @@ String, default: 'lang'
  - cookie name
 	 
 
-# request/response properties
+# stored properties
 
 `connect-locale` stores the following properties to all the defined `storeLocaleTo` targets:
 
- * `req.locale`: matched `locale`
- * `req.requestedLocale`: requested locale detected via the given strategies
- * `req.isPreferredLocale`:  `locale` is equal `requestedLocale`
- * `req.isSubLocale`: sub locale was matched e.g. `en` instead of `en-GB`
+ * `locale`: matched `locale`
+ * `requestedLocale`: requested locale detected via the given strategies
+ * `isPreferredLocale`:  `locale` is equal `requestedLocale`
+ * `isSubLocale`: sub locale was matched e.g. `en` instead of `en-GB`
 
 
 # test
