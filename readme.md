@@ -6,13 +6,13 @@
  - and it is good at it :-)
 
 
-## install
+# install
 ```bash
 npm install connect-locale
 ```
 note: if you want to the use `cookie` locale strategy, make sure you have loaded the [cookie-parser](https://github.com/expressjs/cookie-parser) middleware before this middleware.
 
-## use
+# use
 
 these are the default options:
 
@@ -31,9 +31,9 @@ app.use(Locale({
 }));
 ```
 
-## options
+# options
 
-### locales
+## locales
 
 Array or comma separated String, default: undefined
 
@@ -42,7 +42,7 @@ Array or comma separated String, default: undefined
  - If this option is omitted, it accetps the first locale that is detected with the given `getLocaleFrom` Strategy definition.
 
 
-### getLocaleFrom
+## getLocaleFrom
 
 Array or comma separated String, default: undefined
 
@@ -52,7 +52,7 @@ Array or comma separated String, default: undefined
  - if no `locales` definitions are provided, it just returns the first locale it finds
 
 
-### storeLocaleTo
+## storeLocaleTo
 
 Array or comma separated String, default: empty Array
 
@@ -61,14 +61,14 @@ Array or comma separated String, default: empty Array
  - The provided strategies are always processed from left to right
  - if no locale was found, nothing get's stored
 
-### getLocaleAlways
+## getLocaleAlways
 
 Boolean, default: false
 
  - if set to `false`, it just takes the already stored locale if available, and does not try to get the locale again. 
  - if set to `true` always get locale even when stored already e.g. in cookie or session
 
-### matchSubTags
+## matchSubTags
 
 Boolean, default: true
 
@@ -77,7 +77,7 @@ Boolean, default: true
  - turn this option off (false), if you want to match only the exact locales. e.g. 
 
 
-### reqResProperties
+## reqResProperties
                 
 Boolean, default: true
 
@@ -85,7 +85,7 @@ Boolean, default: true
  - properties: 'locale', 'requestedLocale', 'isPreferredLocale', 'isSubLocale'
 
 
-### locals
+## locals
 
 Boolean, default: true
 
@@ -94,7 +94,7 @@ Boolean, default: true
  - works only in combination with `reqResProperties`
 
 
-### path
+## path
 
 Function, default: req.path
 
@@ -107,40 +107,40 @@ Function, default: req.path
   }
   ```
 
-### strategies
+## strategies
 
 Object, default: all strategies from path './lib/stragety'
 
  - if you want to provide additional stategies, have a look how to implement it in the './lib/stragety' folder.
  - provide an object with the additional strategies in the form: {strategyName: strategy}
   
-### queryLocaleName
+## queryLocaleName
 
 String, default: 'lang'
 
  - url query parameter name. example: `localhost?lang=de`
 
-### cookieLocaleName
+## cookieLocaleName
 
 String, default: 'lang'
 
  - cookie name
   
-### sessionLocaleName
+## sessionLocaleName
 
 String, default: 'lang'
 
  - session nested locale property name. example: `req.session.lang`
 	  
 
-### sessionLocaleName
+## sessionLocaleName
 
 String, default: 'session'
 
  - session property name. example: `req.session`
 	 
 
-## request/response properties
+# request/response properties
 
 by default `connect-locale` stores the following properties to the `request` object as well as to the `res.locals` object:
 
@@ -155,14 +155,14 @@ if you only don't want to store the locale properties in `res.locals`, switch of
 
 
 
-## test
+# test
 ```bash
 npm test
 ```
 
-## credits
+# credits
  * the `acceptLanguage` uses the great [negotiator](https://github.com/jshttp/negotiator)/language module.
  * the other `strategies` were copied from [loc](https://github.com/intesso/loc).
 
-## license
+# license
 MIT
