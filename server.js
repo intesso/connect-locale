@@ -16,13 +16,15 @@ module.export = function locale(options) {
   if (typeof options.storeLocaleTo === 'string') {
     options.storeLocaleTo = options.storeLocaleTo.split(',');
   }
-  if (!Array.isArray(options.storeLocaleTo)) throw new Error('storeLocaleTo must be an Array or a comma separated String');
+  if (!Array.isArray(options.storeLocaleTo)) options.storeLocaleTo = [];
 
   options.cookieLocaleName = options.cookieLocaleName || 'lang';
   options.queryLocaleName = options.queryLocaleName || 'lang';
   options.sessionName = options.sessionName || 'session';
   options.sessionLocaleName = options.sessionLocaleName || 'lang';
   options.matchSubTags = typeof  options.matchSubTags !== 'undefined' ? options.matchSubTags : true;
+  options.reqResProperties = typeof  options.reqResProperties !== 'undefined' ? options.reqResProperties : true;
+  options.locals = typeof  options.locals !== 'undefined' ? options.locals : true;
 
   // create defined locales lookup
   var definedLocales = options.locales;
@@ -84,10 +86,10 @@ module.export = function locale(options) {
     }
 
     // detect locale
-    var locale;
+    var locale, requestedLocale;
     options.getLocaleFrom.some(function(name) {
       var strategy = strategies[name];
-      locale = strategy.getLocaleFrom(req);
+      locale = requestedLocale = strategy.getLocaleFrom(req);
       if (definedLocales) locale = matchLocale(locale);
       return !!locale;
     });
@@ -99,7 +101,7 @@ module.export = function locale(options) {
         // the first one was already tested with getLocaleFrom
         accepted.shift();
         accepted.some(function(l){
-          locale = l;
+          locale = requestedLocale = l;
           if (definedLocales) locale = matchLocale(l);
           return !!locale;
         });
@@ -108,6 +110,20 @@ module.export = function locale(options) {
 
     // no locale at all
     if (!locale) return next();
+
+    // store locale to req and res.locals
+    if (options.reqResProperties) {
+      req.locale = locale;
+      req.requestedLocale = requestedLocale;
+      req.isPreferredLocale = locale === requestedLocale;
+      req.isSubLocale = !req.isPreferredLocale && requestedLocale.indexOf(locale) !== -1;
+    }
+
+    if (options.reqResProperties && options.locals) {
+      ['locale', 'requestedLocale', 'isPreferredLocale', 'isSubLocale'].forEach(function(property){
+        res.locals[property] = req.property;
+      });
+    }
 
     // ok finally, locale detected -> store locale
     options.storeLocaleTo.forEach(function(name) {

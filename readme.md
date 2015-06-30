@@ -52,9 +52,9 @@ Array or comma separated String, default: undefined
 
 > storeLocaleTo: ['cookie', 'session']
 
-Array or comma separated String, default: undefined
+Array or comma separated String, default: empty Array
 
- - Mandatory Locale Storage Strategy Array.
+ - Optional Locale Storage Strategy Array.
  - The provided strategies are always processed from left to right
  - if no locale was found, nothing get's stored
 
@@ -72,6 +72,24 @@ Boolean, default: true
  - SubTags are detected. 
  - the requested `de-CH` matches the defined `de` Locale, if `de-CH` is not defined.
  - turn this option off (false), if you want to match only the exact locales. e.g. 
+
+
+> reqResProperties: true
+                
+Boolean, default: true
+
+ - store locale properties to the request object. useable in following middlewares:
+ - properties: 'locale', 'requestedLocale', 'isPreferredLocale', 'isSubLocale'
+
+
+> locals: true
+
+Boolean, default: true
+
+ - additionally, store locale req properties to res.locals. useable in templates:
+ - properties: 'locale', 'requestedLocale', 'isPreferredLocale', 'isSubLocale'
+ - works only in combination with `reqResProperties`
+
 
 > path
 
@@ -109,7 +127,7 @@ String, default: 'lang'
 
 String, default: 'lang'
 
- - session nested locale properte name. example: `req.session.lang`
+ - session nested locale property name. example: `req.session.lang`
 	  
 
 > sessionLocaleName
@@ -118,6 +136,19 @@ String, default: 'session'
 
  - session property name. example: `req.session`
 	 
+
+## request/response properties
+
+by default `connect-locale` stores the following properties to the `request` object as well as to the `res.locals` object:
+
+>    req.locale: matched locale
+>    req.requestedLocale: requested locale detected via the given strategies
+>    req.isPreferredLocale:  locale === requestedLocale
+>    req.isSubLocale = !req.isPreferredLocale && requestedLocale.indexOf(locale) !== -1;
+
+if you don't want to store the locale properties at all, switch of  `reqResProperties`.
+if you only don't want to store the locale properties in `res.locals`, switch off `locals`.
+
 
 
 ## test
