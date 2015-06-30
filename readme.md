@@ -141,12 +141,13 @@ String, default: 'session'
 
 by default `connect-locale` stores the following properties to the `request` object as well as to the `res.locals` object:
 
->    req.locale: matched locale
->    req.requestedLocale: requested locale detected via the given strategies
->    req.isPreferredLocale:  locale === requestedLocale
->    req.isSubLocale = !req.isPreferredLocale && requestedLocale.indexOf(locale) !== -1;
+ * req.locale: matched locale
+ * req.requestedLocale: requested locale detected via the given strategies
+ * req.isPreferredLocale:  locale === requestedLocale
+ * req.isSubLocale = !req.isPreferredLocale && requestedLocale.indexOf(locale) !== -1;
 
 if you don't want to store the locale properties at all, switch of  `reqResProperties`.
+
 if you only don't want to store the locale properties in `res.locals`, switch off `locals`.
 
 
