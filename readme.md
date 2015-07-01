@@ -45,7 +45,7 @@ app.use(Locale({
 }));
 ```
 
-# `locale` what?
+# locale what?
 `locale` can be the short form of the language and can contain the region as well.
 
 examples:
@@ -179,7 +179,7 @@ npm test
 
 # credits
  * the `acceptLanguage` uses the great [negotiator](https://github.com/jshttp/negotiator)/language module.
- * the other `strategies` were copied from [loc](https://github.com/intesso/loc).
+ * the other `strategies` were extracted from [loc](https://github.com/intesso/loc).
 
 # license
 MIT
