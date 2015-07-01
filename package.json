@@ -1,11 +1,11 @@
 {
   "name": "connect-locale",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "configurable connect/express locale detection middleware",
   "main": "server.js",
   "browser": "browser.js",
   "scripts": {
-    "test": "npm test"
+    "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",
