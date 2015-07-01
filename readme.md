@@ -50,9 +50,13 @@ examples:
 
 specifications:
 > http://www.ietf.org/rfc/rfc1766.txt
+
 > http://www.rfc-editor.org/rfc/rfc4647.txt
+
 > http://www.rfc-editor.org/rfc/rfc5646.txt
+
 > http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+
 
 # locale strategies
 With locale-connect, you can define several strategies to detect/get the requested locale by the user,
