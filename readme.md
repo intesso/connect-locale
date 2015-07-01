@@ -86,7 +86,18 @@ available options:
  - `request`: it stores the locale in the request object. This might be helpful for use in following middlewares.
  - `locals`: it stores the locale in the res.locals object. This might be helpful for using the locale in the templates.
 
-# options
+
+# stored properties
+
+`connect-locale` stores the following properties to all the defined `storeLocaleTo` targets:
+
+ * `locale`: matched `locale`
+ * `requestedLocale`: requested locale detected via the given strategies
+ * `isPreferredLocale`:  `locale` is equal `requestedLocale`
+ * `isSubLocale`: sub locale was matched e.g. `en` instead of `en-GB` or vice versa.
+
+
+# options/api
 
 ## locales
 
@@ -160,16 +171,6 @@ String, default: 'lang'
 
  - cookie name
 	 
-
-# stored properties
-
-`connect-locale` stores the following properties to all the defined `storeLocaleTo` targets:
-
- * `locale`: matched `locale`
- * `requestedLocale`: requested locale detected via the given strategies
- * `isPreferredLocale`:  `locale` is equal `requestedLocale`
- * `isSubLocale`: sub locale was matched e.g. `en` instead of `en-GB`
-
 
 # test
 ```bash
