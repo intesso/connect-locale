@@ -1,5 +1,7 @@
 # connect-locale
+because i18n can still be frustrating, when systems don't let you choose your language or location, but only guess what's best for you. `connect-locale` gives you the flexibility to define your i18n strategy, as well as fallbacks if one strategy is not enough. 
 
+overview:
  - this module provides flexible strategies to detect (get) and store the locale.
  - it is not a full featured localization (i18n) solution that loads ressource files.
  - it only detects and stores the best locale per request/response for the user,
@@ -60,9 +62,7 @@ specifications:
 
 # locale strategies
 With locale-connect, you can define several strategies to detect/get the requested locale by the user,
-
 and you can define several targets where the evaluated locale shall be stored.
-
 
 ## get (getLocaleFrom)
 the strategies are handled from left to right, until one strategy finds the locale.
