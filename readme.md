@@ -1,7 +1,9 @@
 # connect-locale
+why?
+
 because i18n can still be frustrating, when systems don't let you choose your language or location, but only guess what's best for you. `connect-locale` gives you the flexibility to define your i18n strategy, as well as fallbacks if one strategy is not enough. 
 
-overview:
+what does it do?
  - this module provides flexible strategies to detect (get) and store the locale.
  - it is not a full featured localization (i18n) solution that loads ressource files.
  - it only detects and stores the best locale per request/response for the user,
