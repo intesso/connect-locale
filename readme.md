@@ -14,7 +14,9 @@ what does it do?
 ```bash
 npm install connect-locale
 ```
-note: if you want to the use `cookie` locale strategy, make sure you have loaded the [cookie-parser](https://github.com/expressjs/cookie-parser) middleware before this middleware.
+> note: if you want to the use `cookie` locale strategy, 
+> make sure you have loaded the [cookie-parser](https://github.com/expressjs/cookie-parser) middleware before this middleware,
+> so that the cookie get's parsed and added to the `req.cookies` object.
 
 # use
 
