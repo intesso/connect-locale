@@ -174,6 +174,13 @@ String, default: 'lang'
  - cookie name
 	 
 
+## cookie
+
+Object, default: undefined
+
+ - cookie options: see: http://expressjs.com/4x/api.html#res.cookie
+
+
 # test
 ```bash
 npm test
