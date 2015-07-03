@@ -1,6 +1,6 @@
 {
   "name": "connect-locale",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "configurable connect/express locale detection middleware",
   "main": "server.js",
   "browser": "browser.js",
