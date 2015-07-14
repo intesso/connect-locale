@@ -78,6 +78,7 @@ available options:
  - `cookie`: it reads the locale from the cookie. when previously stored.
  - `session`: it reads the locale from the session. when previously stored.
  - `acceptLanguage`: it reads the users language/region preferences sent via the accept-language header.
+ - `default`: it takes the first locale from the `locales` Array as the last fallback option.
 
 ## store (storeLocaleTo)
 the locale (if found) gets stored in the configured targets.
@@ -97,6 +98,8 @@ available options:
  * `requestedLocale`: requested locale detected via the given strategies
  * `isPreferredLocale`:  `locale` is equal `requestedLocale`
  * `isSubLocale`: sub locale was matched e.g. `en` instead of `en-GB` or vice versa.
+ * `isAcceptLocale`: is in the `accept-language` header, but not the best option.
+ * `isDefaultLocale`: is the default option (first defined locale in the `locales` Array).
 
 
 # options/api

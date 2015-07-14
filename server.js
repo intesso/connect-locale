@@ -14,6 +14,9 @@ module.exports = function locale(options) {
   options.queryLocaleName = options.queryLocaleName || 'lang';
   options.matchSubTags = typeof  options.matchSubTags !== 'undefined' ? options.matchSubTags : true;
 
+  // default locale
+  var defaultLocale = (options.locales && options.locales.length > 0) ? options.locales[0] : undefined;
+
   // create defined locales lookup
   var localesLookup = {};
   if (options.locales) {
@@ -50,10 +53,11 @@ module.exports = function locale(options) {
     if (Array.isArray(arr)) {
       arr = arr.join(',');
     }
-    if (typeof arr !== 'string') throw new Error(name +' option must be an Array or a comma separated String');
+    if (typeof arr !== 'string') throw new Error(name + ' option must be an Array or a comma separated String');
     arr = arr.replace(/_/g, '-').replace(/\s/g, '').toLowerCase().split(',');
     return arr;
   }
+
 
   // helper function to detect locale or sublocale
   function matchLocale(locale) {
@@ -74,30 +78,71 @@ module.exports = function locale(options) {
     return found;
   }
 
+
+  function isAccept(accept, locale) {
+    if (!accept || accept.length == 0 || !locale) return false;
+    return accept.some(function(l) {
+      return l === locale
+    });
+  }
+
+  function createLocaleObject(locale, accept, requested) {
+    var isPreferredLocale = locale === requested;
+    var isSubLocale = requested.split('-')[0] === locale.split('-')[0];
+    var isAcceptLocale = isAccept(accept, locale);
+    var isDefaultLocale = locale === defaultLocale;
+
+    return typeof locale === 'object' ? locale : {
+      locale: locale,
+      requestedLocale: requested,
+      isPreferredLocale: isPreferredLocale,
+      isSubLocale: !isPreferredLocale && isSubLocale,
+      isAcceptLocale: !isPreferredLocale && isAcceptLocale,
+      isDefaultLocale: !isPreferredLocale && isDefaultLocale
+    };
+  }
+
   // connect/express middleware
   return function localeMiddleware(req, res, next) {
 
     // detect locale
-    var locale, requestedLocale;
+    var locale = undefined, requested = undefined, accept = undefined;
     options.getLocaleFrom.some(function(name) {
+      if (name === 'default') return false;
       var strategy = strategies[name];
-      locale = requestedLocale = strategy.getLocaleFrom(req);
+      locale = strategy.getLocaleFrom(req, options.locales);
+      if (!requested) {
+        requested = (typeof locale === 'object') ? locale.requestedLocale : locale;
+        console.log('requested', requested, locale, strategy, typeof locale);
+      }
       if (typeof locale === 'object') return true;
       if (options.locales) locale = matchLocale(locale);
       return !!locale;
     });
 
-    // no locale detected to store, last try with acceptLanguage
+    // no locale detected to store, try with acceptLanguage
     if (!locale) {
       if (strategies.acceptLanguage) {
-        var accepted = strategies.acceptLanguage.getLocalesFrom(req);
+        accept = strategies.acceptLanguage.getLocalesFrom(req);
         // the first one was already tested with getLocaleFrom
-        accepted.shift();
-        accepted.some(function(l) {
-          locale = requestedLocale = l;
+
+        console.log('accept', accept);
+
+        accept.shift();
+        accept.some(function(l) {
+          locale = l;
+          if (!requested) requested = l;
           if (options.locales) locale = matchLocale(l);
           return !!locale;
         });
+      }
+    }
+
+    // no locale detected to store, take default locale when added as strategy
+    if (!locale) {
+      if (strategies.default) {
+        locale = strategies.default.getLocaleFrom(req, options.locales);
+        requested = null;
       }
     }
 
@@ -105,15 +150,10 @@ module.exports = function locale(options) {
     if (!locale) return next();
 
     if (typeof locale === 'string') locale = locale.toLowerCase();
-    if (typeof requestedLocale === 'string') requestedLocale = requestedLocale.toLowerCase();
+    if (typeof requested === 'string') requested = requested.toLowerCase();
 
     // store locale
-    var localeObject = typeof locale === 'object' ? locale : {
-      locale: locale,
-      requestedLocale: requestedLocale,
-      isPreferredLocale: locale === requestedLocale,
-      isSubLocale: locale !== requestedLocale && (requestedLocale.split('-')[0] === locale.split('-')[0])
-    };
+    var localeObject = typeof locale === 'object' ? locale : createLocaleObject(locale, accept, requested);
 
     // ok finally, locale detected -> store locale
     options.storeLocaleTo.forEach(function(name) {
