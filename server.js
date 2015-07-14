@@ -113,7 +113,6 @@ module.exports = function locale(options) {
       locale = strategy.getLocaleFrom(req, options.locales);
       if (!requested) {
         requested = (typeof locale === 'object') ? locale.requestedLocale : locale;
-        console.log('requested', requested, locale, strategy, typeof locale);
       }
       if (typeof locale === 'object') return true;
       if (options.locales) locale = matchLocale(locale);
@@ -125,9 +124,6 @@ module.exports = function locale(options) {
       if (strategies.acceptLanguage) {
         accept = strategies.acceptLanguage.getLocalesFrom(req);
         // the first one was already tested with getLocaleFrom
-
-        console.log('accept', accept);
-
         accept.shift();
         accept.some(function(l) {
           locale = l;
