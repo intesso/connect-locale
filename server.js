@@ -87,10 +87,10 @@ module.exports = function locale(options) {
   }
 
   function createLocaleObject(locale, accept, requested) {
-    var isPreferredLocale = locale === requested;
-    var isSubLocale = requested.split('-')[0] === locale.split('-')[0];
+    var isPreferredLocale = locale && locale === requested;
+    var isSubLocale = requested && requested.split('-')[0] === locale.split('-')[0];
     var isAcceptLocale = isAccept(accept, locale);
-    var isDefaultLocale = locale === defaultLocale;
+    var isDefaultLocale = locale && locale === defaultLocale;
 
     return typeof locale === 'object' ? locale : {
       locale: locale,
