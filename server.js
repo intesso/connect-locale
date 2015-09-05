@@ -93,6 +93,7 @@ module.exports = function locale(options) {
     var isDefaultLocale = locale && locale === defaultLocale;
 
     return typeof locale === 'object' ? locale : {
+      locales: options.locales,
       locale: locale,
       requestedLocale: requested,
       isPreferredLocale: isPreferredLocale,
@@ -103,7 +104,7 @@ module.exports = function locale(options) {
   }
 
   // connect/express middleware
-  return function localeMiddleware(req, res, next) {
+  function localeMiddleware(req, res, next) {
 
     // detect locale
     var locale = undefined, requested = undefined, accept = undefined;
@@ -159,5 +160,10 @@ module.exports = function locale(options) {
     return next();
 
   }
+
+  localeMiddleware.matchLocale = matchLocale;
+  localeMiddleware.locales = options.locales;
+
+  return localeMiddleware;
 
 };
