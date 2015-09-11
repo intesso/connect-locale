@@ -120,10 +120,10 @@ module.exports = function locale(options) {
       return !!locale;
     });
 
-    // no locale detected to store, try with acceptLanguage
+    // no locale detected to store, try with accept-language
     if (!locale) {
-      if (strategies.acceptLanguage) {
-        accept = strategies.acceptLanguage.getLocalesFrom(req);
+      if (strategies['accept-language']) {
+        accept = strategies['accept-language'].getLocalesFrom(req);
         // the first one was already tested with getLocaleFrom
         accept.shift();
         accept.some(function(l) {

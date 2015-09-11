@@ -37,7 +37,7 @@ app.use(Locale({
     // strategies where to look for the locale:
     // in this example, it looks first for the locale in the path, then in the cookie, 
     // and if it still didn't find it, it reads the users language/region preferences sent via the accept-language header.
-    getLocaleFrom: ['path', 'cookie', 'acceptLanguage'],
+    getLocaleFrom: ['path', 'cookie', 'accept-language'],
     
     // strategies where to store the locale:
     // in this configuration it stores the locale in a cookie (to persist between requests), 
@@ -77,7 +77,7 @@ available options:
  - `query`: it reads the locale from the url query: `www.mywebsite.com/home?{locale}
  - `cookie`: it reads the locale from the cookie. when previously stored.
  - `session`: it reads the locale from the session. when previously stored.
- - `acceptLanguage`: it reads the users language/region preferences sent via the accept-language header.
+ - `accept-language`: it reads the users language/region preferences sent via the accept-language header.
  - `default`: it takes the first locale from the `locales` Array as the last fallback option.
 
 ## store (storeLocaleTo)
@@ -118,7 +118,7 @@ Array or comma separated String, default: undefined
 
 Array or comma separated String, default: undefined
 
- - Available Strategies: ['path', 'subdomain', 'query', 'cookie', 'session', 'acceptLanguage']
+ - Available Strategies: ['path', 'subdomain', 'query', 'cookie', 'session', 'accept-language']
  - Mandatory Locale Detection Strategy Array.
  - The provided strategies are processed from left to right until a locale matches
  - if no `locales` definitions are provided, it just returns the first locale it finds
@@ -191,7 +191,7 @@ npm test
 ```
 
 # credits
- * the `acceptLanguage` uses the great [negotiator](https://github.com/jshttp/negotiator)/language module.
+ * the `accept-language` uses the great [negotiator](https://github.com/jshttp/negotiator)/language module.
  * the other `strategies` were extracted from [loc](https://github.com/intesso/loc).
 
 # license
