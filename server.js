@@ -13,6 +13,7 @@ module.exports = function locale(options) {
   options.cookieLocaleName = options.cookieLocaleName || 'lang';
   options.queryLocaleName = options.queryLocaleName || 'lang';
   options.matchSubTags = typeof  options.matchSubTags !== 'undefined' ? options.matchSubTags : true;
+  options.persistLocales = typeof options.persistLocales !== 'undefined' ? options.persistLocales : true;
 
   // default locale
   var defaultLocale = (options.locales && options.locales.length > 0) ? options.locales[0] : undefined;
@@ -92,16 +93,23 @@ module.exports = function locale(options) {
     var isAcceptLocale = isAccept(accept, locale);
     var isDefaultLocale = locale && locale === defaultLocale;
 
-    return typeof locale === 'object' ? locale : {
-      locales: options.locales,
-      locale: locale,
-      requestedLocale: requested,
-      isPreferredLocale: isPreferredLocale,
-      isSubLocale: !isPreferredLocale && isSubLocale,
-      isAcceptLocale: !isPreferredLocale && isAcceptLocale,
-      isDefaultLocale: !isPreferredLocale && isDefaultLocale
-    };
-  }
+    if (typeof locale === 'object') {
+      return locale;
+    }
+    else {
+      var returnLocale = {
+        locale: locale,
+        requestedLocale: requested,
+        isPreferredLocale: isPreferredLocale,
+        isSubLocale: !isPreferredLocale && isSubLocale,
+        isAcceptLocale: !isPreferredLocale && isAcceptLocale,
+        isDefaultLocale: !isPreferredLocale && isDefaultLocale
+      };
+
+      if (options.persistLocales) returnLocale.locales = options.locales;
+      return returnLocale;
+    }
+}
 
   // connect/express middleware
   function localeMiddleware(req, res, next) {

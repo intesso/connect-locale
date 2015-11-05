@@ -185,6 +185,13 @@ Object, default: undefined
  - cookie options: see: http://expressjs.com/4x/api.html#res.cookie
 
 
+## persistLocales
+
+ Boolean, default: true
+
+ - determines whether to include array of locales in persisted locale object
+
+
 # test
 ```bash
 npm test
