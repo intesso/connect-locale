@@ -94,7 +94,7 @@ available options:
 
 `connect-locale` stores the following properties to all the defined `storeLocaleTo` targets:
 
- * `locales`: array containing the supported `locales`
+ * `locales`: array containing the supported `locales` (optional)
  * `locale`: matched `locale`
  * `requestedLocale`: requested locale detected via the given strategies
  * `isPreferredLocale`:  `locale` is equal `requestedLocale`
@@ -183,6 +183,13 @@ String, default: 'lang'
 Object, default: undefined
 
  - cookie options: see: http://expressjs.com/4x/api.html#res.cookie
+
+
+## persistLocales
+
+ Boolean, default: true
+
+ - determines whether to include array of locales in persisted locale object
 
 
 # test
