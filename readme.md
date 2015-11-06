@@ -94,7 +94,7 @@ available options:
 
 `connect-locale` stores the following properties to all the defined `storeLocaleTo` targets:
 
- * `locales`: array containing the supported `locales`
+ * `locales`: array containing the supported `locales` (optional)
  * `locale`: matched `locale`
  * `requestedLocale`: requested locale detected via the given strategies
  * `isPreferredLocale`:  `locale` is equal `requestedLocale`
