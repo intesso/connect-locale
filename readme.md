@@ -184,6 +184,13 @@ Object, default: undefined
 
  - cookie options: see: http://expressjs.com/4x/api.html#res.cookie
 
+## preserveRequested
+
+Boolean, default: false
+
+- when set to true, if locales are passed in an no match is found, `requestedLocale` is still preserved
+- default behavior is that if no match is found, `requestedLocale` is set to `null`
+
 
 # test
 ```bash

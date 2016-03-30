@@ -13,6 +13,7 @@ module.exports = function locale(options) {
   options.cookieLocaleName = options.cookieLocaleName || 'lang';
   options.queryLocaleName = options.queryLocaleName || 'lang';
   options.matchSubTags = typeof  options.matchSubTags !== 'undefined' ? options.matchSubTags : true;
+  options.preserveRequested = typeof  options.preserveRequested !== 'undefined' ? options.preserveRequested : false;
 
   // default locale
   var defaultLocale = (options.locales && options.locales.length > 0) ? options.locales[0] : undefined;
@@ -139,7 +140,9 @@ module.exports = function locale(options) {
     if (!locale) {
       if (strategies.default) {
         locale = strategies.default.getLocaleFrom(req, options.locales);
-        requested = null;
+        if (!options.preserveRequested) {
+          requested = null;
+        }
       }
     }
 
