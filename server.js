@@ -29,7 +29,7 @@ module.exports = function locale(options) {
         while (~subtag.indexOf('-')) {
           var index = subtag.lastIndexOf('-');
           subtag = subtag.substring(0, index);
-          if (!localesLookup[subtag] || localesLookup[subtag] !== subtag) localesLookup[subtag] = locale;
+          if (!localesLookup[subtag] || localesLookup[subtag] !== subtag) localesLookup[subtag] = subtag;
         }
       }
 
